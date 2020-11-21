@@ -8,9 +8,9 @@ plugins {
 ext.getMyVersion = { ->
     def details = versionDetails()
     String version = details.lastTag + "." + details.commitDistance
-//    if (details.branchName != "release") {
-//        version = version + "-SNAPSHOT"
-//    }
+    if (details.branchName != "release") {
+        version = version + "-SNAPSHOT"
+    }
     return version
 }
 
