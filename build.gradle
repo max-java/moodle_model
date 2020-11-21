@@ -8,9 +8,9 @@ plugins {
 ext.getMyVersion = { ->
     def details = versionDetails()
     String version = details.lastTag + "." + details.commitDistance
-    if (details.branchName != "release") {
-        version = version + "-SNAPSHOT"
-    }
+//    if (details.branchName != "release") {
+//        version = version + "-SNAPSHOT"
+//    }
     return version
 }
 
@@ -45,32 +45,32 @@ task showVersion {
     }
 }
 
-    publishing {
-        repositories {
-            maven {
-                name = "GitHubPackages"
-                url = uri("https://maven.pkg.github.com/max-java/moodle-model")
-                credentials {
-                    Properties props = new Properties()
-                    def propFile = file('./git.properties')
-                    if (propFile.canRead()) {
-                        props.load(new FileInputStream(propFile))
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/max-java/moodle_model")
+            credentials {
+                Properties props = new Properties()
+                def propFile = file('./git.properties')
+                if (propFile.canRead()) {
+                    props.load(new FileInputStream(propFile))
 
-                        if (props != null
-                                && props.containsKey('username')
-                                && props.containsKey('password')) {
+                    if (props != null
+                            && props.containsKey('username')
+                            && props.containsKey('password')) {
 
-                            username = props['username']
-                            password = props['password']
-                        }
+                        username = props['username']
+                        password = props['password']
                     }
                 }
             }
         }
-        publications {
-            gpr(MavenPublication) {
-                from(components.java)
-            }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
         }
     }
+}
 
