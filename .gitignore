@@ -28,3 +28,6 @@ hs_err_pid*
 *.iml
 build/
 .gradle/
+
+#publish to git packages credentials
+git.properties
