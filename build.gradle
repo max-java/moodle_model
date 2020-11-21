@@ -64,7 +64,7 @@ publishing {
     repositories {
         maven {
             name = "GitHubPackages"
-            url = uri("https://maven.pkg.github.com/max-java/moodle_model")
+            url = uri("https://maven.pkg.github.com/max-java/m2")
             credentials {
                 Properties props = new Properties()
                 def propFile = file('./git.properties')
