@@ -1,11 +1,21 @@
 plugins {
     id 'java'
-    id 'com.palantir.git-version' version '0.7.3'
+    id 'com.palantir.git-version' version '0.12.3'
+}
+
+// ext makes method callable project wide
+ext.getMyVersion = { ->
+    def details = versionDetails()
+    String version = details.lastTag+"."+details.commitDistance
+    if(details.branchName != "release") {
+        version = version+"-SNAPSHOT"
+    }
+    return version
 }
 
 apply plugin: "com.palantir.git-version"
 group 'by.jrr'
-version gitVersion()
+version getMyVersion()
 
 sourceCompatibility = 1.11
 
@@ -20,7 +30,8 @@ dependencies {
 
 task showVersion {
     doLast {
-        println "\nCurrent version: ${gitVersion()}\n"
+        println "\nCurrent getMyVersion: ${getMyVersion()}\n"
+        println "\nCurrent palantir version: ${gitVersion()}\n"
 
         def details = versionDetails()
         println "last tag          : ${details.lastTag}"
@@ -30,4 +41,6 @@ task showVersion {
         println "is clean tag      : ${details.isCleanTag}"
     }
 }
+
+
 
