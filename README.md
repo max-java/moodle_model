@@ -1,5 +1,5 @@
 # moodle_model
-project to storedto 
+project to store dto 
 
 release - relesed atrefacts <br />
 main - staging & tast  
