@@ -7,14 +7,15 @@ plugins {
 // ext makes method callable project wide
 ext.getMyVersion = { ->
     def details = versionDetails()
-    String version = details.lastTag+"."+details.commitDistance
-    if(details.branchName != "release") {
-        version = version+"-SNAPSHOT"
+    String version = details.lastTag + "." + details.commitDistance
+    if (details.branchName != "release") {
+        version = version + "-SNAPSHOT"
     }
     return version
 }
 
 apply plugin: "com.palantir.git-version"
+
 group 'by.jrr'
 version getMyVersion()
 
@@ -43,12 +44,47 @@ task showVersion {
     }
 }
 
-publishing {
-    repositories {
-        maven {
-            url = "https://maven.pkg.github.com/max-java/moodle_model"
+task printGitProperties {
+    Properties props = new Properties()
+    def propFile = file('./git.properties')   //pay attention to the path
+    if (propFile.canRead()) {
+        props.load(new FileInputStream(propFile))
+
+        if (props != null && props.containsKey('username') && props.containsKey('password')) {
+
+            String username = props['username']
+            String password = props['password']
+            println "My username = " + username
+            println "My password = " + password
         }
     }
 }
 
+publishing {
+    repositories {
+        maven {
+            name = "GitHubPackages"
+            url = uri("https://maven.pkg.github.com/max-java/moodle_model")
+            credentials {
+                Properties props = new Properties()
+                def propFile = file('./git.properties')
+                if (propFile.canRead()) {
+                    props.load(new FileInputStream(propFile))
 
+                    if (props != null
+                            && props.containsKey('username')
+                            && props.containsKey('password')) {
+
+                        username = props['username']
+                        password = props['password']
+                    }
+                }
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+        }
+    }
+}
