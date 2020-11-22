@@ -22,7 +22,6 @@ version getMyVersion()
 sourceCompatibility = 1.11
 
 repositories {
-    mavenLocal()
     mavenCentral()
 }
 
